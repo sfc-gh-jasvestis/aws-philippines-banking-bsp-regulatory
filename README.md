@@ -8,7 +8,6 @@ Philippine banks submit 200+ regulatory reports to BSP every quarter — Financi
 
 ```mermaid
 flowchart LR
-    SP --> RAW[RAW Tables]
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
     DT --> SEARCH[Cortex Search]
