@@ -116,10 +116,10 @@ Run all scripts including AWS integration. Deploy QuickSight dashboard from `qui
 ## Business Impact
 
 Industry research and Snowflake customer outcomes:
-- **Philippine banks face ₱500K-₱10M penalties per report filing violation** — [BSP](https://www.bsp.gov.ph/Regulations/banking.aspx)
-- **Banks spend 40-60% of compliance budget on manual regulatory reporting** — [Deloitte RegTech](https://www2.deloitte.com/global/en/pages/financial-services/articles/gx-regulatory-management.html)
+- **Philippine banks face ₱500K-₱10M penalties per report filing violation** — [BSP](https://www.bsp.gov.ph/SitePages/Regulations/RegulationsLanding.aspx)
+- **Banks spend 40-60% of compliance budget on manual regulatory reporting** — [Deloitte RegTech](https://www.deloitte.com/global/en/Industries/financial-services/perspectives.html)
 - **Automated regulatory reporting reduces errors by 70-90% and cost by 50%** — [McKinsey Banking](https://www.mckinsey.com/industries/financial-services/our-insights)
-- **BSP supervises 500+ banks and issues 50-80 new circulars annually** — [BSP](https://www.bsp.gov.ph/Regulations/Issuances/Circulars.aspx)
+- **BSP supervises 500+ banks and issues 50-80 new circulars annually** — [BSP](https://www.bsp.gov.ph/SitePages/Regulations/RegulationsLanding.aspx)
 - **Western Union** (Snowflake customer): processes 1B+ cross-border transactions on Snowflake with real-time compliance and fraud detection -- [snowflake.com/customers/western-union](https://www.snowflake.com/en/customers/all-customers/case-study/western-union/)
 
 ## Key Demo Numbers
