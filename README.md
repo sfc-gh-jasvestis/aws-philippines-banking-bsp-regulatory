@@ -120,7 +120,7 @@ Industry research and Snowflake customer outcomes:
 - **Banks spend 40-60% of compliance budget on manual regulatory reporting** — [Deloitte RegTech](https://www2.deloitte.com/global/en/pages/financial-services/articles/gx-regulatory-management.html)
 - **Automated regulatory reporting reduces errors by 70-90% and cost by 50%** — [McKinsey Banking](https://www.mckinsey.com/industries/financial-services/our-insights)
 - **BSP supervises 500+ banks and issues 50-80 new circulars annually** — [BSP](https://www.bsp.gov.ph/Regulations/Issuances/Circulars.aspx)
-
+- **Western Union** (Snowflake customer): processes 1B+ cross-border transactions on Snowflake with real-time compliance and fraud detection -- [snowflake.com/customers/western-union](https://www.snowflake.com/en/customers/all-customers/case-study/western-union/)
 
 ## Key Demo Numbers
 
