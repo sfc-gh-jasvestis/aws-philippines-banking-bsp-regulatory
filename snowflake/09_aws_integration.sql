@@ -1,6 +1,6 @@
 -- ============================================================================
 -- 09_AWS_INTEGRATION.SQL — AWS services for BSP Regulatory Reporting & Compliance Automation
--- Account: 018437500440 | Region: ap-southeast-1
+-- Account: <YOUR_AWS_ACCOUNT_ID> | Region: ap-southeast-1
 -- Skip this script for Snowflake-only build
 -- ============================================================================
 USE DATABASE REGULATORY_REPORTING;
@@ -72,5 +72,5 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION aws_philippines_banking_bsp_regula
   ENABLED = TRUE
   COMMENT = 'SNS access for BSP Regulatory Reporting & Compliance Automation alerts';
 
--- SNS Topic ARN: arn:aws:sns:ap-southeast-1:018437500440:sea-demos-aws-philippines-banking-bsp-regulatory
+-- SNS Topic ARN: arn:aws:sns:ap-southeast-1:<YOUR_AWS_ACCOUNT_ID>:sea-demos-aws-philippines-banking-bsp-regulatory
 
