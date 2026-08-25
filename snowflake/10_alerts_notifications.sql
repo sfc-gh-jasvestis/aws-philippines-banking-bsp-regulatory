@@ -8,7 +8,7 @@ USE SCHEMA APP;
 CREATE OR REPLACE NOTIFICATION INTEGRATION aws_philippines_banking_bsp_regulatory_EMAIL_INT
   TYPE = EMAIL
   ENABLED = TRUE
-  ALLOWED_RECIPIENTS = ('jonathan.asvestis@snowflake.com');
+  ALLOWED_RECIPIENTS = ('<YOUR_EMAIL>');
 
 -- Alert: DEADLINE_ALERT
 CREATE OR REPLACE ALERT APP.DEADLINE_ALERT
@@ -22,7 +22,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_philippines_banking_bsp_regulatory_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] BSP Regulatory Reporting & Compliance Automation: Report approaching deadline with low readiness score',
     'Report approaching deadline with low readiness score'
   );
@@ -41,7 +41,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_philippines_banking_bsp_regulatory_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] BSP Regulatory Reporting & Compliance Automation: Reconciliation gap exceeding ₱1M threshold',
     'Reconciliation gap exceeding ₱1M threshold'
   );
