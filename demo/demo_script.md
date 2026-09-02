@@ -1,109 +1,82 @@
-# Demo Script: BSP Regulatory Reporting & Compliance Automation
-## ~4-Minute Recorded Walkthrough
-**Format**: Screen recording with voiceover
-**Target**: Customer meeting / booth loop / social share
-**Narrative**: "Snowflake processes regulatory documents via Textract + AI_PARSE_DOCUMENT, orchestrates report generation with Step Functions-equivalent Task Graphs, and provides Cortex Search on BSP circulars — transforming manual compliance into automated pipelines"
-**Demo Mode**: Open app with `?demo=true` for presenter notes
+# BSP Regulatory Reporting & Compliance Automation
 
----
+**Philippines - Banking & Insurance**
+Use case: Regulatory Reporting
 
-## Two Personas
+> Philippine banks submit 200+ reports to BSP quarterly — Snowflake automates regulatory data preparation with Task Graphs, parses regulatory circulars with AI, and enables compliance teams to query requirements in natural language.
 
-| Persona | Role | Tool | What they care about |
-|---|---|---|---|
-| **Atty. Corazon Mercedes Aquino** | Chief Compliance Officer | React App (SPCS) | Regulatory exam readiness, report accuracy, filing deadlines, BSP findings remediation |
-| **Fernando Jose Ramirez** | Regulatory Reporting Manager | Amazon QuickSight | Data quality for reports, reconciliation gaps, automation coverage, error rates |
+## Why Snowflake
 
----
+Snowflake processes regulatory documents via Textract + AI_PARSE_DOCUMENT, orchestrates report generation with Step Functions-equivalent Task Graphs, and provides Cortex Search on BSP circulars — transforming manual compliance into automated pipelines
 
-## What's Built
+- **AI_PARSE_DOCUMENT on BSP circulars** - Only demo extracting regulatory requirements from Philippine regulatory documents
+- **Task Graphs replacing Step Functions** - Multi-step report generation pipeline orchestrated natively in Snowflake
+- **Cortex Search on 450 BSP circulars** - Natural language queries across Philippine banking regulations
+- **ML.CLASSIFICATION predicting report failures** - Proactive quality — predicts which reports will fail validation before filing
+- **BSP-specific regulatory context** - Philippine banking regulations (DOSRI, CAMEL, FRP, capital adequacy)
+- **Reconciliation anomaly detection** - ML.ANOMALY_DETECTION catches data quality issues between source systems
 
-| Layer | Component | Detail |
+## What is deployed
+
+| | |
+|---|---|
+| Database | `PH_BANKING_BSP_REGULATORY` |
+| Service | `PH_BANKING_BSP_REGULATORY_APP` |
+| Compute pool | `SEA_DEMOS_PHILIPPINES_POOL` |
+| Dimension table | `RAW.REPORT_CATALOG` (20 rows) |
+| Fact table | `RAW.FINANCIAL_DATA` (250,000 rows, 90 days) |
+| Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
+| Currency | PHP (₱) |
+
+Regions in play: Metro Manila, Cebu, Davao, Pampanga, Iloilo
+Segments: FRP Report, AMLC Report, Basel III, Consumer Protection
+
+Dynamic tables are created suspended and refreshed on demand:
+
+```bash
+./refresh_demo_data.sh PH_BANKING_BSP_REGULATORY
+```
+
+## KPI cards
+
+Every card below is served live from `CURATED.KPI_SUMMARY`. The app keeps the
+original literal as a fallback, so it still renders if Snowflake is unreachable.
+
+| Card | Value | Backed by |
 |---|---|---|
-| **RAW** | 7 tables | REPORT_CATALOG (210), SUBMISSION_HISTORY (4800), FINANCIAL_DATA (8500000), BSP_CIRCULARS (450), EXAM_FINDINGS (280), RECONCILIATION_DATA (1200000), VALIDATION_RULES (3500) |
-| **CURATED** | 4 Dynamic Tables | REPORT_READINESS, RECONCILIATION_STATUS, FINDING_TRACKER, COMPLIANCE_CALENDAR |
-| **ML** | ML.CLASSIFICATION + ML.ANOMALY_DETECTION | Forecasting + anomaly detection |
-| **AI** | AI_PARSE_DOCUMENT, AI_CLASSIFY, COMPLETE | Classification + extraction |
-| **Search** | Cortex Search | 450 documents indexed |
-| **Agent** | COMPLIANCE_INTELLIGENCE_AGENT | Semantic View + Search tools |
+| CAR Ratio | `16.8%` | average per event |
+| LCR | `142%` | average per event |
+| BSP Findings Open | `4` | total across Report Catalog |
+| Reports Submitted | `247` | total across Report Catalog |
+| Stress CAR (Severe) | `12.4%` | average per event |
+| Credit Loss (Severe) | `₱18B` | total across Report Catalog |
+| Liquidity Buffer | `₱42B` | total across Report Catalog |
 
 
----
+## Demo flow
 
-## The Story
+1. Executive Cockpit
+2. Report Readiness
+3. Circular Compliance
+4. Ask AI
+5. Architecture & Data
 
-Philippine banks submit 200+ regulatory reports to BSP every quarter — Financial Reporting Package, CAMEL ratings, DOSRI disclosures, capital adequacy, liquidity coverage, stress tests, and more. One universal bank's compliance team of 45 people spends 60% of their time on manual data preparation. Reports still fail BSP validation 15% of the time, triggering exam findings. Snowflake automates the entire pipeline while AI makes 450 BSP circulars instantly searchable.
+## Talking points
 
----
+- **210 reports** - regulatory filings due per quarter
+- **38 reports** - due within next 2 weeks
+- **12 reports** - predicted to fail BSP validation (ML.CLASSIFICATION)
+- **450 circulars** - parsed and searchable via Cortex Search
+- **14 findings** - outstanding BSP exam findings
+- **4 hours** - automated report generation (vs 3 days manual)
 
-## Script
+## Business impact
 
-### [0:00–0:45] EXECUTIVE COCKPIT
-
-**Show**: Executive Cockpit tab
-
-> "210 regulatory reports due this quarter — 38 reports due within next 2 weeks."
-
-**Action**: Point at 210 reports dashboard
-
-### [0:45–1:30] REPORT READINESS
-
-**Show**: Report Readiness tab
-
-> "ML.CLASSIFICATION predicts 12 reports likely to fail BSP validation this cycle."
-
-**Action**: Show predicted failure reports in amber/red
-
-### [1:30–2:15] CIRCULAR COMPLIANCE
-
-**Show**: Circular Compliance tab
-
-> "AI_PARSE_DOCUMENT processed 450 BSP circulars — extracting requirements, deadlines, impact areas."
-
-**Action**: Show parsed circular with extracted requirements
-
-### [2:15–3:00] ASK AI
-
-**Show**: Ask AI tab
-
-> "Atty. Aquino asks: 'Which reports failed validation last quarter?'"
-
-**Action**: Type: 'Reports that failed last quarter?'
-
-### [3:00–3:45] ARCHITECTURE & DATA
-
-**Show**: Architecture & Data tab
-
-> "Textract → AI_PARSE_DOCUMENT for circulars. Step Functions → Task Graphs for report generation."
-
-**Action**: Walk through architecture diagram
-
+- Philippine banks face ₱500K-₱10M penalties per report filing violation (BSP)
+- Banks spend 40-60% of compliance budget on manual regulatory reporting (Deloitte RegTech)
+- Automated regulatory reporting reduces errors by 70-90% and cost by 50% (McKinsey Banking)
+- BSP supervises 500+ banks and issues 50-80 new circulars annually (BSP)
 
 ---
-
-## Key Demo Differentiators
-
-1. **AI_PARSE_DOCUMENT on BSP circulars** — Only demo extracting regulatory requirements from Philippine regulatory documents
-2. **Task Graphs replacing Step Functions** — Multi-step report generation pipeline orchestrated natively in Snowflake
-3. **Cortex Search on 450 BSP circulars** — Natural language queries across Philippine banking regulations
-4. **ML.CLASSIFICATION predicting report failures** — Proactive quality — predicts which reports will fail validation before filing
-5. **BSP-specific regulatory context** — Philippine banking regulations (DOSRI, CAMEL, FRP, capital adequacy)
-6. **Reconciliation anomaly detection** — ML.ANOMALY_DETECTION catches data quality issues between source systems
-
-
----
-
-## Demo Prep Checklist
-
-### Data Verification
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.RAW.FINANCIAL_DATA` → 8500000
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.RAW.BSP_CIRCULARS` → 450
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.CURATED.REPORT_READINESS WHERE READINESS_SCORE < 80` → >=12
-
-### ML Model Verification
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.ML.REPORT_ERROR_PREDICTION WHERE WILL_FAIL_VALIDATION = TRUE` → 12
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.ML.DATA_QUALITY_ANOMALY_RESULTS WHERE IS_ANOMALY = TRUE` → >0
-
-### AI/Agent Verification
-- [ ] `SELECT COUNT(*) FROM REGULATORY_REPORTING.AI.PARSED_CIRCULARS` → 450
-
+Generated from `generator/demo_specs/aws-philippines-banking-bsp-regulatory.json`. Do not hand-edit: run
+`python3 generator/gen_repo_docs.py aws-philippines-banking-bsp-regulatory` instead.
