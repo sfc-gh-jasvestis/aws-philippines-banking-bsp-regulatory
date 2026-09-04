@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="philippines"
+            regions={data?.regions}
             markers={[{"label": "Manila", "value": "HQ: 247 branches", "color": "blue", "size": "lg"}, {"label": "Cebu", "value": "Visayas: 84 branches", "color": "green", "size": "md"}, {"label": "Davao", "value": "Mindanao: 42 branches", "color": "green", "size": "md"}, {"label": "Baguio", "value": "N.Luzon: 28 branches", "color": "amber", "size": "sm"}]}
             routes={[]}
             title="Geographic Overview"
@@ -114,7 +115,7 @@ export default function HomePage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Chart
-          data={data?.breakdown || [{ label: 'Zone North', value: 35 }, { label: 'Zone Central', value: 28 }, { label: 'Zone South', value: 22 }, { label: 'Zone East', value: 15 }]}
+          data={data?.regionAlerts || [{ label: 'Zone North', value: 35 }, { label: 'Zone Central', value: 28 }, { label: 'Zone South', value: 22 }, { label: 'Zone East', value: 15 }]}
           type="pie"
           xKey="label"
           yKeys={[{ key: 'value', name: 'Days to Deadline' }]}
