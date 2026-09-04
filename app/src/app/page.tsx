@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="philippines"
+            labels={{ entity: 'Circulars', event: 'Financial Records', alert: 'Late Filings' }}
             regions={data?.regions}
             markers={[{"label": "Manila", "value": "HQ: 247 branches", "color": "blue", "size": "lg"}, {"label": "Cebu", "value": "Visayas: 84 branches", "color": "green", "size": "md"}, {"label": "Davao", "value": "Mindanao: 42 branches", "color": "green", "size": "md"}, {"label": "Baguio", "value": "N.Luzon: 28 branches", "color": "amber", "size": "sm"}]}
             routes={[]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Circular' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Status' },
-          { key: 'value', header: 'Due Date' },
+          { key: 'm1', header: 'Due Date' },
+          { key: 'm2', header: 'Stress Car Severe' },
+          { key: 'm3', header: 'Lcr' },
+          { key: 'events', header: 'Financial Records' },
+          { key: 'alerts', header: 'Late Filings' },
         ]}
         data={data?.entities || []}
         title="BSP Regulatory Dashboard"
