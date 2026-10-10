@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "repo": "aws-philippines-banking-bsp-regulatory",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "PHP",
+  "grains": {
+    "RAW.REPORTING_UNITS": "one row per regulatory reporting unit",
+    "RAW.UNIT_DAILY": "one row per reporting unit per day (90 days)",
+    "RAW.SOURCE_FEEDS": "one row per reporting unit (source-feed mapping snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per reporting unit",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.RULE_SUMMARY": "one row per validation rule",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.ERROR_RISK_SCORES": "one row per reporting unit (latest day)"
+  },
+  "metrics": {
+    "Exception Precision": "100 * SUM(MATERIAL_ERROR_COUNT) / SUM(EXCEPTION_COUNT)",
+    "Exceptions Raised": "SUM(EXCEPTION_COUNT)",
+    "Material Errors": "SUM(MATERIAL_ERROR_COUNT)",
+    "Items Escalated": "SUM(ITEMS_ESCALATED)",
+    "Balances Validated (PHP B)": "SUM(BALANCE_PHP) / 1e9",
+    "Records Submitted": "SUM(RECORD_COUNT)",
+    "Sign-off Compliance": "100 * SUM(SIGNOFF_COMPLETED) / SUM(SIGNOFF_DUE)",
+    "Reporting Units Monitored": "COUNT(RAW.REPORTING_UNITS)",
+    "Feed Mapping Coverage": "100 * SUM(LEAST(MAPPED_FEEDS, REQUIRED_FEEDS)) / SUM(REQUIRED_FEEDS)",
+    "Feeds Pending Mapping": "SUM(PENDING_FEEDS)"
+  },
+  "chart_bindings": {
+    "daily_exceptions": ["CURATED.TREND_ANALYSIS.METRIC_DATE", "EXCEPTION_COUNT", "MATERIAL_ERROR_COUNT"],
+    "exceptions_by_rule": ["CURATED.RULE_SUMMARY.VALIDATION_RULE", "EXCEPTION_COUNT", "MATERIAL_ERROR_COUNT"],
+    "signoff_vs_errors": ["CURATED.PERFORMANCE_SUMMARY.SIGNOFF_COMPLIANCE_PCT", "MATERIAL_ERROR_COUNT"],
+    "quicksight_error_risk": ["ENTITY_ID", "MAX(ERROR_PROB_7D)"]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "error_risk_model": "Snowflake ML CLASSIFICATION of P(material reporting error in next 7 days) per reporting unit, evaluated on an out-of-time holdout",
+    "forecast_and_anomaly": "14-day bank-wide exception-volume FORECAST; late source-feed ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.REPORTING_SOP_SEARCH over synthetic exception-handling SOPs (one per report domain and validation rule)",
+    "semantic_analytics": "Semantic view APP.REGREPORT_ANALYTICS and Cortex Agent APP.REGREPORT_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and SOP citations; the action memo uses only KPI, reporting-unit, validation-rule and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (reporting units, daily exceptions, material errors by unit, material-error risk, feed loads) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "Amazon Data Firehose -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_EVENTS",
+    "notifications": "APP.LIVE_EVENT_ALERT logs new ALERT feed loads to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.PH_BANKING_BSP_REGULATORY_APP; routes /api/data, /api/ask, /api/agent"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "PHILIPPINES_BANKING_BSP_REGULATORY_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "live_events": "APP.SIMULATE_EVENTS(n)",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)"
+    },
+    "aws": {
+      "database": "PHILIPPINES_BANKING_BSP_REGULATORY_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "live_events": "Amazon Data Firehose -> S3 -> Snowpipe",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}
